@@ -283,7 +283,7 @@ const EmployeeFormsList = ({
           </div>
 
           {/* Forms Wizard Button */}
-          {isFormsEditable === 'yes' && canUseWizard() && (
+          { /* isFormsEditable === 'yes' && canUseWizard() && (
             <div className="text-center mb-4">
               <Button
                 color="success"
@@ -295,7 +295,20 @@ const EmployeeFormsList = ({
                 Forms Wizard
               </Button>
             </div>
-          )}
+          ) */}
+
+          {/*  Remove below code once api integration is done. use above code block */}
+          <div className="text-center mb-4">
+              <Button
+                color="success"
+                size="lg"
+                onClick={handleViewFormWizard}
+                title="Click To Complete All Forms"
+              >
+                <i className="fas fa-play mr-2"></i>
+                Forms Wizard
+              </Button>
+            </div>
 
           {/* Success Alert */}
           {alertSuccess && (
@@ -348,7 +361,8 @@ const EmployeeFormsList = ({
 
                             <div className="ml-2 flex-grow-1">
                               <div className="font-weight-bold text-dark d-flex align-items-center">
-                                {isFormsEditable === 'yes' && form.isEditable === true ? (
+                                {/* {isFormsEditable === 'yes' && form.isEditable === true ? ( */}
+                                { true ? (   /* comment this line and use above line once api is integrated */
                                   <button
                                     className="btn btn-link text-primary p-0 text-left font-weight-bold"
                                     onClick={() => handleViewForm(form)}
