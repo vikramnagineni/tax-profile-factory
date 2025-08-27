@@ -43,7 +43,7 @@ export const EmployeeFormsApiService = {
       
       // Return true if questionnaire should be shown, false for direct forms
       // This could be based on employee status, previous submissions, etc.
-      return false; // Mock: questionnaire applies
+      return true; // Mock: questionnaire applies
     },
   
     // Get supported form formats for the employee

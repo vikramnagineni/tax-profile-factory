@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Container, Row, Col, Badge, CardBody } from 'reactstrap';
+import { Row, Badge, CardBody } from 'reactstrap';
 import Questionnaire from './Questionnaire';
 import EmployeeFormTabs from './EmployeeFormTabs';
 import FormViewer from './FormViewer';
@@ -22,6 +22,7 @@ const EmployeeForms = ({
   const [employee, setEmployee] = useState({});
   const [empResponse, setEmpResponse] = useState(false);
   const [title, setTitle] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   // Page modes
   const PAGE_MODES = {
@@ -32,7 +33,9 @@ const EmployeeForms = ({
   // Initialize component
   useEffect(() => {
     initializeComponent();
-  }, [mode]);
+  }, []); // Remove mode dependency to prevent re-initialization
+
+
 
   // Main initialization function
   const initializeComponent = async () => {
@@ -50,6 +53,8 @@ const EmployeeForms = ({
       }
     } catch (error) {
       console.error('Error initializing component:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -117,23 +122,30 @@ const EmployeeForms = ({
       // Set questionnaire state and title
       if (questionsApply) {
         setQuestionnaire(true);
+        setFormApprovals(false);
+        setReviewApproveTaxes(false);
         if (empResponse && employeeData) {
           setTitle(`Questionnaire - Employee ${employeeData.empnum}`);
         } else {
-          // setTitle('Questionnaire');
           setTitle(`Questionnaire - Employee 11315`);
         }
       } else {
         setQuestionnaire(false);
+        setFormApprovals(false);
+        setReviewApproveTaxes(false);
         if (empResponse && employeeData) {
           setTitle(`My Forms - Employee ${employeeData.empnum}`);
         } else {
-          // setTitle('My Forms');
           setTitle('My Forms - Employee 11315');
         }
       }
     } catch (error) {
       console.error('Error in default mode setup:', error);
+      // On error, default to questionnaire
+      setQuestionnaire(true);
+      setFormApprovals(false);
+      setReviewApproveTaxes(false);
+      setTitle('Questionnaire - Employee 11315');
     }
   };
 
@@ -239,20 +251,35 @@ const EmployeeForms = ({
       <div class="card shadow mb-3">
         <div class="card-body">
           <Row>
-            {/* Conditional Component Rendering */}
-            {questionnaire && !formApprovals && !reviewApproveTaxes && (
-              <Questionnaire mainCtrl={mainCtrl} />
+            {/* Loading State */}
+            {isLoading && (
+              <div className="text-center py-5">
+                <div className="spinner-border text-primary" role="status">
+                  <span className="sr-only">Loading...</span>
+                </div>
+                <p className="mt-3 text-muted">Loading forms...</p>
+              </div>
             )}
 
-            {!questionnaire && !formApprovals && !reviewApproveTaxes && (
-              <EmployeeFormTabs mainCtrl={mainCtrl} activetab={1} />
+            {/* Conditional Component Rendering - Only show when not loading */}
+            {!isLoading && (
+              <>
+                {questionnaire && !formApprovals && !reviewApproveTaxes && (
+                  <Questionnaire mainCtrl={mainCtrl} />
+                )}
+
+                {!questionnaire && !formApprovals && !reviewApproveTaxes && (
+                  <EmployeeFormTabs mainCtrl={mainCtrl} activetab={1} />
+                )}
+              </>
             )}
           </Row>
         </div>
       </div>
       
-      {/* Form Viewer Modal */}
+ {/* Form Viewer Modal */}
       <FormViewer mainCtrl={mainCtrl} />
+      
     </div>
   );
 };
