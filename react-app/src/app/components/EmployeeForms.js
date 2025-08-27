@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import { Container, Row, Col, Badge, CardBody } from 'reactstrap';
 import Questionnaire from './Questionnaire';
 import EmployeeFormTabs from './EmployeeFormTabs';
+import FormViewer from './FormViewer';
 import { EmployeeFormsApi } from '../services/EmployeeFormsApiService';
+import { FormViewerService } from '../services/FormViewerService';
 
 const EmployeeForms = ({ 
   mode = 'default',
@@ -171,6 +173,24 @@ const EmployeeForms = ({
     newWindow.document.close();
   };
 
+  // Handle form viewing - equivalent to Angular's viewForm functionality
+  const handleViewForm = (forms) => {
+    console.log('Opening form viewer for:', forms);
+    FormViewerService.setFormsToFill(forms, () => {
+      console.log('Form viewing completed');
+      // Optionally refresh forms list or perform other actions
+    }, true);
+  };
+
+  // Handle form wizard viewing
+  const handleViewFormWizard = (forms) => {
+    console.log('Opening form wizard for:', forms);
+    FormViewerService.setFormsToFill(forms, () => {
+      console.log('Form wizard completed');
+      // Optionally refresh forms list or perform other actions
+    }, true);
+  };
+
   // Main controller object for child components
   const mainCtrl = {
     isFormsEditable: isFormsEditable === 'yes',
@@ -179,6 +199,8 @@ const EmployeeForms = ({
     employee,
     empResponse,
     viewFormInstruction,
+    onViewForm: handleViewForm,
+    onViewFormWizard: handleViewFormWizard,
     title,
     mode,
     page: {
@@ -229,8 +251,8 @@ const EmployeeForms = ({
         </div>
       </div>
       
-
-      
+      {/* Form Viewer Modal */}
+      <FormViewer mainCtrl={mainCtrl} />
     </div>
   );
 };
