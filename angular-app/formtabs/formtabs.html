@@ -1,0 +1,66 @@
+
+
+<div class="row">
+	<div class="col-md-offset-2 col-md-8" >
+		<!--  common notification area -->
+		<div class="spacer">
+			<uib-alert ng-if="$ctrl.page.alert.msg" type="{{$ctrl.page.alert.type}}" close="$ctrl.page.closeAlert($index)"><b>{{$ctrl.page.alert.msg}}</b></uib-alert>
+		</div>
+		<!-- Tabs  -->
+		<uib-tabset active="$ctrl.activetab" justified="true" type="pills">
+			<uib-tab index="1" >
+			
+				<uib-tab-heading>
+				<h4>
+					<span class="glyphicon glyphicon-list-alt"></span>&nbsp;Forms To Be Completed
+				</h4>
+				</uib-tab-heading>
+				<div class="tab-padding">  
+					<forms-to-be-completed tabindex="1"></forms-to-be-completed> 
+				</div>
+			</uib-tab> 			
+		<uib-tab index="2"	ng-if="$ctrl.fromsTabsData.showCompletdForms" >
+			
+				<uib-tab-heading >
+				<h4>
+					<span class="glyphicon glyphicon-eye-open"></span> View/Change Completed Forms
+				</h4>
+				</uib-tab-heading>
+				<div class="tab-padding" >  
+					<completed-forms tabindex="2"></completed-forms>
+				</div>
+			
+		</uib-tab> 
+		
+		<uib-tab index="3"	ng-if="$ctrl.fromsTabsData.submitedForms">
+			
+				<uib-tab-heading >
+				<h4>
+					<span class="glyphicon glyphicon-flag"></span> Forms Pending Employer Approval
+				</h4>
+				</uib-tab-heading>
+				<div class="tab-padding" >  
+					<submitted-forms tabindex="3"></submitted-forms>
+				</div>
+			
+		</uib-tab>
+		<uib-tab index="4"	ng-if="$ctrl.fromsTabsData.showRejectForms" >				
+			<uib-tab-heading>
+			<h4>
+				<span class="glyphicon glyphicon-floppy-remove"></span> Saved/Rejected Forms
+			</h4>
+			</uib-tab-heading>
+			<div class="tab-padding">  
+				<div class="tab-padding" >  
+					<rejected-forms tabindex="4"></rejected-forms>
+				</div>
+			</div>
+		
+			
+		</uib-tab>
+		
+		
+		</uib-tabset>
+	</div>
+</div>
+

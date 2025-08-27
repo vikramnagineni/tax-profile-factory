@@ -1,0 +1,156 @@
+
+<div ng-if="$ctrl.formsToBeFilled">
+    <div class="spacer">	
+        <uib-progress>
+            <!-- <uib-bar value="(!$ctrl.progress.value || $ctrl.progress.value) < 80 ? 20 : 0" type="success">Questionnaire Complete</uib-bar> -->
+            <uib-bar class="{{$ctrl.progress.className}}" value="$ctrl.progress.value" type="{{$ctrl.progress.type}}">{{$ctrl.progress.label}}</uib-bar>
+        </uib-progress>
+    </div>
+    
+    
+    <div ng-if="!$ctrl.formsSubmissionFrameShown">
+            
+            <div class="btn-toolbar" ng-if="$ctrl.isFormsEditable === 'yes'">
+                <center><button type="button" id="btnWizard" popover-animation="true" popover-trigger="mouseenter" uib-popover="Click To Complete All Forms." aria-label="Click To Complete All Forms." class="btn btn-success btn-lg" ng-click="$ctrl.viewFormWizard()" ng-if="$ctrl.canUseWizard()"><i class="glyphicon glyphicon-play"></i>&nbsp;Forms Wizard</button></center>
+             </div>
+            
+            <div>
+                <div class="panel-group" id="accordion">
+                <div ng-repeat="(authName,forms) in $ctrl.formsToBeFilled">
+                  <br>
+                  <div class="panel panel-info">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#{{authName}}">
+                        {{authName}}</a>
+                      </h4>
+                    </div>
+                    <div id="{{authName}}" class="panel-collapse collapse in">
+                      <div class="panel-body">
+                          <div ng-repeat="form in forms" class="pad-25px">
+                             
+                             <table>						
+                                <tr>
+                                <td>
+    <!--								<span ng-if="form.taxMsg && $ctrl.loginType == 'employee'">-->
+                                    <span ng-if="form.taxMsg">
+                                        <a href="#" popover-animation="true"
+                                           popover-trigger="mouseenter"
+                                           uib-popover="{{form.taxMsg}}"
+                                           aria-label="{{form.taxMsg}}"
+                                           type="button"><i  class="glyphicon glyphicon-warning-sign icon-lg text-danger"></i></a>
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="#" popover-animation="true" popover-trigger="mouseenter" uib-popover="{{form.rptName}}" aria-label="{{form.rptName}}" type="button"><i class="glyphicon glyphicon-info-sign"></i></a>
+                                </td>							
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>							
+                                <td>																			
+                                
+                                
+                                <a ng-if="$ctrl.isFormsEditable === 'yes' && form.isEditable===true" ng-click="$ctrl.viewForm(form)" href="">
+                                
+                                {{form.rpttitle}}
+                                
+                                </a>
+                                 
+                                <span ng-if="$ctrl.isFormsEditable === 'no' || form.isEditable===false">
+                                
+                                    {{form.rpttitle}}
+                                                            
+                                </span>
+                                </td>
+                                </tr>
+                                </table>
+                                <br>							
+                        </div>
+                        
+                    </div>
+                    </div>
+                  </div>  
+                </div>
+            </div>
+        </div>
+        <div class="btn-toolbar pull-right">    		
+                <button type="button" id="btnChooseForms" class="btn btn-primary btn-sm pull-right" ng-click="$ctrl.showChooserModal()">Pick Other Forms</button>
+        </div>
+    </div>
+    </div>
+    <div ng-if="$ctrl.showChooserContent">
+    <script type="text/ng-template" id="chooserContentFroms.html">
+    <div aria-labelledby="modalLabel" id="chooserModal">
+    
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">				
+                    <center><h3>Please Choose A Form</h3></center>			
+            </div>		
+        </div>	
+        <div class="row spacer">
+            <div class="col-md-10 col-md-offset-1">
+                <center>
+                <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="glyphicon glyphicon-filter"></i>
+                    </span>
+                <input type="text" class="form-control" id="query" ng-model="query" placeholder="Type authority name to filter..." class="selfrmquery"/>    		
+                </div>
+                </center>
+            </div>
+        </div>
+        <div class="row">
+        <div class="col-md-10 col-md-offset-1">		
+                <div class="dlgscrl">			    
+                        <div ng-repeat="frm in $ctrl.otherForms|filter:{authName:query}">				
+                        <div class="panel-group" id="accordion">
+                            <div class="panel panel-info spacer">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion"
+                                            href="#{{frm.authName}}"> {{frm.authName}}</a>
+                                    </h4>
+                                </div>
+                                <div id="{{frm.authName}}" class="panel-collapse collapse in">
+                                    <div class="panel-body" >
+                                        <div ng-repeat="form in frm.forms" class="pad-25px">
+                                            <a href="#" popover-animation="true" popover-trigger="mouseenter"
+                                                uib-popover="{{form.rptName}}" aria-label="{{form.rptName}}" type="button"><i
+                                                class="glyphicon glyphicon-info-sign"></i></a> <span>&nbsp;</span>
+                                                <input id="chooseExemption" name="chooseExemption" type="radio"
+                                            class="required" ng-model="$ctrl.selectedforms[$parent.$index]" value="{{form.reportid}}" ng-click="$ctrl.handleAnswers(form.reportid)">
+                                            <span class="text-info">{{form.rpttitle}}&nbsp;<a href="#" class="fa fa-2x fa-file-pdf-o text-info" aria-hidden="true" popover-animation="true" popover-trigger="mouseenter" uib-popover="Click To View Form Instructions" aria-label="Click To View Form Instructions" ng-click="$ctrl.formTabsCtrl.mainCtrl.viewFormInstruction(form.reportid, form.effectiveDate)"></a></span> <br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                        </div>
+                      
+                </div>
+            
+        </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" ng-click="$ctrl.chooseSelectedForms()">Choose Selected Form</button>
+            <button type="button" class="btn btn-warning" ng-click="$ctrl.closeChooserModal()">Close</button>
+        </div>
+    </div>
+    </script>
+    </div>
+    <div ng-if="!$ctrl.formsToBeFilled" class="spacer">
+    <!--  temp code -  center is deprecated, use bootstrap grid to show this info -->
+    <br><br>
+    <div class="btn-toolbar pull-right">    		
+                <button type="button" id="btnChooseForms" class="btn btn-primary btn-sm pull-right" ng-click="$ctrl.showChooserModal()">Pick Other Forms</button>
+    </div>
+    <br/> <br/><br/> <br/>
+    <div class="alert alert-info fade in">
+        <a href="#" class="close" data-dismiss="alert"></a>
+        <strong>Note!</strong> You have no forms required to be completed. You can access View/Change Completed Forms to change a previously filed form or Saved/Rejected Forms to finish forms in progress or Pick Other Forms to choose a form to be completed. Not all options may be available to you.
+    </div>
+    
+    
+    
+    
+    
+    
+    

@@ -1,0 +1,15 @@
+<div class="row">
+	<div class="col-md-offset-2 col-md-8">
+		<div class="page-header">
+		<br>
+			<h4 class="text-primary">
+				<span class="glyphicon glyphicon-folder-open">&nbsp;</span>{{$ctrl.title}}<span class="pull-right"><mark><span class="glyphicon glyphicon-briefcase">&nbsp;</span>{{$ctrl.company.legalname}}</mark></span>
+			</h4>
+		</div>
+	</div>
+</div>
+<questionnaire ng-if="$ctrl.questionnaire && !$ctrl.formapprovals && !$ctrl.reviewapprovetaxes"></questionnaire>
+<form-tabs ng-if="!$ctrl.questionnaire && !$ctrl.formapprovals && !$ctrl.reviewapprovetaxes" activetab="1"></form-tabs>
+<form-viewer></form-viewer>
+<form-approvals ng-if="$ctrl.formapprovals"></form-approvals>
+<approve-review-taxes ng-if="$ctrl.reviewapprovetaxes"></approve-review-taxes>

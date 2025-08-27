@@ -1,0 +1,20 @@
+{
+    "id": "4091ae2a-5ee6-4ee3-b736-eafa1cedf51f",
+    "name": "TaxProfileFactoryEmployee",
+    "desc": "Tax Profile Factory Employee",
+    "badge": "tp",
+    "bundleName": "tpfEmployeeBundle.js",
+    "version": "1",
+    "buildNo":"2025_19_08_TPFE",
+    "renderFunction": "renderTPFEmployee",
+    "macVersion":"1.0", 
+    "areas": [ {
+        "id":"8751fb53-1d80-4ea1-a322-b227ff9f5eba",
+        "groupId":"Group1", 
+        "title": "Employee Self Service",
+        "icon": "fas fa-cogs fa-sm",
+        "tooltip": "Employee Self Service",
+        "renderName": "renderTPFEmployeeMaintHome",
+        "visible": true
+    }]
+}
