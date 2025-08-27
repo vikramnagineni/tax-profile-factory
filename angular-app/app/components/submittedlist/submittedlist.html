@@ -1,0 +1,60 @@
+
+<div>
+	<div class="panel-group" id="accordion">
+		<div ng-repeat="(authName,forms) in $ctrl.submittedForms">
+			<br>
+			<div class="panel panel-info spacer">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" data-parent="#accordion"
+							href="#{{authName}}"> {{authName}}</a>
+					</h4>
+				</div>
+				<div id="{{authName}}" class="panel-collapse collapse in">
+					<div class="panel-body">
+						<div ng-repeat="form in forms" class="pad-25px">
+                             
+                             <table>						
+							 <tr>
+							 <td>
+                             
+							<a href="#" popover-animation="true" popover-trigger="mouseenter"
+								uib-popover="{{form.frmName}}" aria-label="{{form.frmName}}" type="button"><i
+								class="glyphicon glyphicon-info-sign"></i></a>
+								
+							 </td>							
+							<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+							<td>
+							{{form.description}}&nbsp; 
+							</td>
+							<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+							<td>
+							<a href="#" popover-animation="true"
+								popover-trigger="mouseenter"
+								uib-popover="Submitted on {{form.onbDateDisp}}&nbsp;{{form.onbTimeDisp}}"
+								aria-label="Submitted on {{form.onbDateDisp}}&nbsp;{{form.onbTimeDisp}}"
+								type="button"><i class="glyphicon glyphicon-time"></i></a>
+							</td>
+							</tr>
+							</table> 
+								
+							<br>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<div ng-if="!$ctrl.submittedForms" class="spacer">
+	<center>
+		<h2>You dont have any submitted forms!</h2>
+	</center>
+</div>
+
+
+

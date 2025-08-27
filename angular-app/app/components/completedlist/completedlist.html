@@ -1,0 +1,201 @@
+<div ng-if="!$ctrl.dataAvailable" class="spacer">
+    <br><br>
+    <center><h1>Loading <i class='fa fa-cog fa-spin'></i></h1></center> 
+    </div>
+    <div>
+        <div class="panel-group" id="accordion">
+            <div ng-repeat="(authName,forms) in $ctrl.completedForms">
+                <br>
+                <div class="panel panel-info spacer">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion"
+                                href="#{{authName}}"> {{authName}}</a> 
+                        </h4>
+                    </div>
+                    <div id="{{authName}}" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div ng-repeat="form in forms" class="pad-25px">
+                            
+                                <table>				 
+                                
+                                <tr>
+                                <td>
+                                <a href="#" class="glyphicon glyphicon-info-sign text-info" popover-animation="true" popover-trigger="mouseenter" popover-placement="left"  uib-popover="{{form.frmName}}" aria-label="{{form.frmName}}" type="button"></a>
+                                </td>
+                                
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                
+                                <td>																			
+                                <a href="" ng-click="$ctrl.viewForm(form)">{{form.rpttitle}}</a> &nbsp;&nbsp;
+                                </td>
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                
+                                <td>														
+                                <a href="#" popover-animation="true"
+                                    popover-trigger="mouseenter"
+                                    uib-popover="Filed on {{form.onbDateDisp}}&nbsp;{{form.onbTimeDisp}}"
+                                    aria-label="Filed on {{form.onbDateDisp}}&nbsp;{{form.onbTimeDisp}}"
+                                    type="button"><i class="glyphicon glyphicon-time"></i></a>
+                                    </td>
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                <td>
+    <!--							<span ng-if="form.taxMsg && $ctrl.loginType == 'employee'">-->
+                                    <span ng-if="form.taxMsg">
+                                    <a href="#" popover-animation="true"
+                                    popover-trigger="mouseenter"  
+                                    uib-popover="{{form.taxMsg}}"
+                                    aria-label="{{form.taxMsg}}"
+                                    type="button"><i  class="glyphicon glyphicon-warning-sign icon-lg text-danger"></i></a>
+                                
+                                </span> 							
+                                <span ng-if="form.taxMsg && (form.onbStatus == '10' || form.onbStatus == '9') && $ctrl.loginType == 'employer'">
+                                    <button 
+                                        type="button" 
+                                        id="btnChooseForms" 
+                                        class="btn btn-danger btn-sm" 
+                                        ng-click="$ctrl.rejectFailedModal(form, authName)">
+                                             Override to Rejected 
+                                    </button>
+                                    <button 
+                                        type="button" 
+                                        id="btnChooseForm" 
+                                        class="btn btn-danger btn-sm" 
+                                        ng-click="$ctrl.successFailedModal(form, authName)">
+                                            Override to Success
+                                    </button>
+                                        
+                                
+                                </span>
+                                </td>
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                <td>
+    
+                                <!-- <span ng-if="$ctrl.canModifyForms">  -->
+                                <span ng-if="!form.taxMsg && !form.isEditable">
+                                    <button 
+                                        type="button" 
+                                        id="btnChooseForms" 
+                                        class="btn btn-danger btn-sm" 
+                                        ng-click="$ctrl.showChooserModal(form.reportid,form.effectiveDate)">Change</button>
+                                </span>
+                                </td>
+                                </tr>
+                                
+                                
+                                </table>
+                            
+                          </div>
+    
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script type="text/ng-template" id="rejectFailed.html"> 
+    <div aria-labelledby="modalLabel" id="chooserModal">
+        <div class="modal-header">
+                <h3 class="modal-title">Enter your reason for rejection</h3>
+            </div>
+         <div class="modal-body">
+            <div>
+            <input 
+            type="text" 
+            id="reason"
+            name="reason"
+            placeholder="Enter your reason for rejection"
+            class="alpaca-control form-control" />
+    
+        </div>
+    
+        </div>
+        <div class="modal-footer">
+            <button 
+                type="button" 
+                class="btn btn-warning" 
+                ng-click="$ctrl.rejectFailedForm($ctrl.formToBeRejected)">
+                   Confirm
+            </button>
+            <div id="loading-bar-spinner" class="bar" style="top: 80%; display: none">
+                <div class="spinner-icon"></div>
+            </div>
+        </div>
+    </div>
+    </script>
+    
+    <script type="text/ng-template" id="successFailed.html"> 
+    <div aria-labelledby="modalLabel" id="chooserModal">
+        <div class="modal-header">
+                <h3 class="modal-title">Enter your reason for Success</h3>
+            </div>
+         <div class="modal-body">
+            <div>
+            <input 
+            type="text" 
+            id="reasons"
+            name="reasons"
+            placeholder="Enter your reason for Success"
+            class="alpaca-control form-control" />
+    
+        </div>
+    
+        </div>
+        <div class="modal-footer">
+            <button 
+                type="button" 
+                class="btn btn-warning" 
+                ng-click="$ctrl.successFailedForm($ctrl.formToBeSuccess)">
+                   Confirm
+            </button>
+            <div id="loading-bar-spinner" class="bar" style="top: 80%; display: none">
+                <div class="spinner-icon"></div>
+            </div>
+        </div>
+    </div>
+    </script>
+    
+    
+     <script type="text/ng-template" id="chooserContent.html"> 
+    <div aria-labelledby="modalLabel" id="chooserModal">
+        <div class="modal-header">
+                <h3 class="modal-title">Please Choose Appropriate Form</h3>
+            </div>
+         <div class="modal-body">
+        <div class="row dlgscrl">
+            <div class="col-md-10 col-md-offset-1">
+            
+                        <div ng-repeat="form in $ctrl.otherForms">					
+                            <a href="#" popover-animation="true" popover-trigger="mouseenter" popover-placement="right"
+                                            uib-popover="{{form.rptName}})" aria-label="{{form.rptName}}" type="button"><i
+                                            class="glyphicon glyphicon-info-sign"></i></a> <span>&nbsp;</span>
+    
+                                        <span ng-if="$ctrl.isFormsEditable === 'no'">
+                                            <span class="text-info">{{form.rpttitle}}</span> <br>
+                                        </span>
+                                        <span ng-if="$ctrl.isFormsEditable === 'yes'">
+                                            <input id="chooseExemption" name="chooseExemption" type="radio"
+                                        class="required" ng-click="$ctrl.selectForm(form)">
+                                        <span class="text-info">{{form.rpttitle}}</span> <br>
+                                        </span>
+                        </div>
+                      
+            </div>
+        </div> 
+        </div>
+        <div class="modal-footer">
+            <span ng-if="$ctrl.isFormsEditable === 'yes'" >		
+                <button type="button" class="btn btn-warning" ng-click="$ctrl.chooseForm()">Choose Selected Form</button>
+            </span>
+            <button type="button" class="btn btn-warning" ng-click="$ctrl.closeChooserModal()">Close</button>
+        </div>
+    </div>
+    </script>
+    
+    <div ng-if="!$ctrl.completedForms && $ctrl.dataAvailable" class="spacer">
+    <br><br>
+    <center><h2>Forms are loading. Please wait....</h2></center> 
+    </div>
+    
+    

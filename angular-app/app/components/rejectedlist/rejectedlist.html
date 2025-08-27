@@ -1,0 +1,93 @@
+
+<div>
+	<div class="panel-group" id="accordion">
+		<div ng-repeat="(authName,forms) in $ctrl.rejAndSavedForms">
+			<br>
+			<div class="panel panel-info spacer">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" data-parent="#accordion"
+							href="#{{authName}}"> {{authName}}</a>
+					</h4>
+				</div>
+				<div id="{{authName}}" class="panel-collapse collapse in">
+					<div class="panel-body">
+						<div ng-repeat="form in forms" class="pad-25px">
+						
+						<table>						
+							<tr>
+							<td>
+
+							<a href="#" popover-animation="true" popover-trigger="mouseenter"
+								uib-popover="{{form.frmName}}" aria-label="{{form.frmName}}" type="button"><i class="glyphicon glyphicon-info-sign"></i></a>
+							</td>
+							
+							<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+							<td>
+									
+							 
+						<a ng-if="$ctrl.isFormsEditable === 'yes'" ng-click="$ctrl.loadForm(form)" href="">	{{form.description}}</a>&nbsp; 
+						<span ng-if="$ctrl.isFormsEditable === 'no'">	{{form.description}} </span>&nbsp;
+						</td>
+						
+						
+						<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>											 
+						
+						<td>
+						<span ng-if="form.onbStatus == 2">
+											
+							<a href="#" popover-animation="true" popover-trigger="mouseenter"
+								uib-popover="Rejected on {{form.onbDateDisp}}&nbsp;{{form.onbTimeDisp}}"
+								aria-label="Rejected on {{form.onbDateDisp}}&nbsp;{{form.onbTimeDisp}}"
+								type="button">
+						
+								<i class="glyphicon glyphicon-warning-sign text-danger" ></i></a>							
+								
+								<span ng-if="form.rejReason != ''">
+								
+								<a href="#" popover-animation="true" popover-trigger="mouseenter"
+								uib-popover="Rejected reason is {{form.rejReason}}"
+								aria-label="Rejected reason is {{form.rejReason}}"
+								type="button">
+								
+								<i class="glyphicon glyphicon-comment" style="color:blue"></i></a> </span></span>
+								
+								</td>
+						
+						<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+						<td>
+															
+								
+								
+						<span ng-if="form.onbStatus == 0">
+						
+							<a href="#" popover-animation="true" popover-trigger="mouseenter"
+								uib-popover="Saved on {{form.onbDateDisp}}&nbsp;{{form.onbTimeDisp}}" aria-label="Saved on {{form.onbDateDisp}}&nbsp;{{form.onbTimeDisp}}"
+								type="button"><i class="glyphicon glyphicon-floppy-saved" style="color:blue"></i></a> </span>
+							</td>
+							<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+							<td>
+							<button type="button" id="btnDelete" class="btn btn-danger btn-sm" ng-click="$ctrl.deleteForm(form.reportid,form.effectiveDate,form.runDate,form.runTime)">Delete</button>
+							</td>
+							</tr>
+							</table>
+				
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<div ng-if="!$ctrl.rejAndSavedForms" class="spacer">
+	<center>
+		<h2>You don't have any rejected/saved forms!</h2>
+	</center>
+</div>
+
+
+
