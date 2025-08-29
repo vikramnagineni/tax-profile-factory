@@ -94,6 +94,171 @@ export const EmployeeFormsApiService = {
       });
       
       return { success: true };
+    },
+
+    // Get submitted forms pending employer approval
+    getSubmittedForms: async () => {
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      return {
+        submittedForms: {
+          'Federal': [
+            {
+              reportid: 'W4',
+              description: 'Employee\'s Withholding Certificate',
+              frmName: 'Federal W-4 Form',
+              onbDateDisp: '2024-01-15',
+              onbTimeDisp: '10:30 AM',
+              effectiveDate: '2024-01-01',
+              status: 'Pending Approval'
+            },
+            {
+              reportid: 'I9',
+              description: 'Employment Eligibility Verification',
+              frmName: 'Federal I-9 Form',
+              onbDateDisp: '2024-01-14',
+              onbTimeDisp: '2:15 PM',
+              effectiveDate: '2024-01-01',
+              status: 'Pending Approval'
+            }
+          ],
+          'California': [
+            {
+              reportid: 'CAW4',
+              description: 'California Withholding Certificate',
+              frmName: 'CA W-4 Form',
+              onbDateDisp: '2024-01-13',
+              onbTimeDisp: '9:45 AM',
+              effectiveDate: '2024-01-01',
+              status: 'Pending Approval'
+            }
+          ],
+          'Indiana': [
+            {
+              reportid: 'INW4',
+              description: 'Indiana Withholding Certificate',
+              frmName: 'IN W-4 Form',
+              onbDateDisp: '2024-01-12',
+              onbTimeDisp: '11:20 AM',
+              effectiveDate: '2024-01-01',
+              status: 'Pending Approval'
+            }
+          ]
+        },
+        alertCount: 3,
+        recentAlerts: 'You have 3 forms pending employer approval. Please wait for your manager to review and approve these submissions.'
+      };
+    },
+
+    // Get completed forms
+    getCompletedForms: async () => {
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      return {
+        completedForms: {
+          'Federal': [
+            {
+              reportid: 'W4',
+              rpttitle: 'Employee\'s Withholding Certificate',
+              frmName: 'Federal W-4 Form',
+              onbDateDisp: '2024-01-10',
+              onbTimeDisp: '9:30 AM',
+              effectiveDate: '2024-01-01',
+              onbStatus: '10',
+              isEditable: false,
+              taxMsg: null
+            },
+            {
+              reportid: 'I9',
+              rpttitle: 'Employment Eligibility Verification',
+              frmName: 'Federal I-9 Form',
+              onbDateDisp: '2024-01-08',
+              onbTimeDisp: '2:15 PM',
+              effectiveDate: '2024-01-01',
+              onbStatus: '10',
+              isEditable: false,
+              taxMsg: null
+            }
+          ],
+          'California': [
+            {
+              reportid: 'CAW4',
+              rpttitle: 'California Withholding Certificate',
+              frmName: 'CA W-4 Form',
+              onbDateDisp: '2024-01-05',
+              onbTimeDisp: '11:45 AM',
+              effectiveDate: '2024-01-01',
+              onbStatus: '9',
+              isEditable: false,
+              taxMsg: 'Tax calculation warning - please review'
+            }
+          ],
+          'Indiana': [
+            {
+              reportid: 'INW4',
+              rpttitle: 'Indiana Withholding Certificate',
+              frmName: 'IN W-4 Form',
+              onbDateDisp: '2024-01-03',
+              onbTimeDisp: '10:20 AM',
+              effectiveDate: '2024-01-01',
+              onbStatus: '10',
+              isEditable: false,
+              taxMsg: null
+            }
+          ]
+        }
+      };
+    },
+
+    // Get change forms for a specific report
+    getChangeForms: async (reportId, effectiveDate) => {
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 300));
+      
+      return {
+        forms: [
+          {
+            reportid: 'W4_EXEMPT',
+            rpttitle: 'W-4 with Exemptions',
+            rptName: 'Federal W-4 Form with Exemptions'
+          },
+          {
+            reportid: 'W4_MULTIPLE',
+            rpttitle: 'W-4 Multiple Jobs',
+            rptName: 'Federal W-4 Form for Multiple Jobs'
+          },
+          {
+            reportid: 'W4_OTHER',
+            rpttitle: 'W-4 Other Adjustments',
+            rptName: 'Federal W-4 Form with Other Adjustments'
+          }
+        ]
+      };
+    },
+
+    // Get effective date parameters for a form
+    getEffDateParams: async (reportId) => {
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 200));
+      
+      return {
+        bypassSelection: false,
+        defaulDate: '01/01/2024',
+        minSelDate: '01/01/2024',
+        maxSelDate: '12/31/2024'
+      };
+    },
+
+    // Check form status
+    checkFormStatus: async (reportId, effectiveDate) => {
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      // Mock status - in production this would check actual form status
+      const statuses = ['INPROGRESS', 'SUBMIT_SUCCESS', 'SUBMIT_FAILED'];
+      return statuses[Math.floor(Math.random() * statuses.length)];
     }
   };
   
@@ -107,7 +272,12 @@ export const EmployeeFormsApiService = {
       getFormInstructionUrl: EmployeeFormsApiService.getFormInstructionUrl,
       validateSession: EmployeeFormsApiService.validateSession,
       getUserPermissions: EmployeeFormsApiService.getUserPermissions,
-      logActivity: EmployeeFormsApiService.logActivity
+      logActivity: EmployeeFormsApiService.logActivity,
+      getSubmittedForms: EmployeeFormsApiService.getSubmittedForms,
+      getCompletedForms: EmployeeFormsApiService.getCompletedForms,
+      getChangeForms: EmployeeFormsApiService.getChangeForms,
+      getEffDateParams: EmployeeFormsApiService.getEffDateParams,
+      checkFormStatus: EmployeeFormsApiService.checkFormStatus
     };
   };
   

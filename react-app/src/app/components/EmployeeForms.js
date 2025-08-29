@@ -33,9 +33,7 @@ const EmployeeForms = ({
   // Initialize component
   useEffect(() => {
     initializeComponent();
-  }, []); // Remove mode dependency to prevent re-initialization
-
-
+  }, []);
 
   // Main initialization function
   const initializeComponent = async () => {
@@ -120,13 +118,14 @@ const EmployeeForms = ({
       setUseHTML(formFormat === 'HTML');
 
       // Set questionnaire state and title
-      if (questionsApply) {
+      if (false) {
         setQuestionnaire(true);
         setFormApprovals(false);
         setReviewApproveTaxes(false);
         if (empResponse && employeeData) {
           setTitle(`Questionnaire - Employee ${employeeData.empnum}`);
         } else {
+          // setTitle('Questionnaire');
           setTitle(`Questionnaire - Employee 11315`);
         }
       } else {
@@ -136,12 +135,13 @@ const EmployeeForms = ({
         if (empResponse && employeeData) {
           setTitle(`My Forms - Employee ${employeeData.empnum}`);
         } else {
+          // setTitle('My Forms');
           setTitle('My Forms - Employee 11315');
         }
       }
     } catch (error) {
       console.error('Error in default mode setup:', error);
-      // On error, default to questionnaire
+       // On error, default to questionnaire
       setQuestionnaire(true);
       setFormApprovals(false);
       setReviewApproveTaxes(false);
@@ -251,7 +251,7 @@ const EmployeeForms = ({
       <div class="card shadow mb-3">
         <div class="card-body">
           <Row>
-            {/* Loading State */}
+           {/* Loading State */}
             {isLoading && (
               <div className="text-center py-5">
                 <div className="spinner-border text-primary" role="status">

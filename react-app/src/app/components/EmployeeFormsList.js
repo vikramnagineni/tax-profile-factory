@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Container, Row, Col, Alert, Form, FormGroup, Label, Input, Card, CardHeader, CardBody, Collapse } from 'reactstrap';
+import { useState, useEffect } from 'react';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Row, Col, Alert, FormGroup, Label, Input, Card, CardHeader, CardBody, Collapse } from 'reactstrap';
 import ProgressBar from './ProgressBar';
 
 // Mock API service since the import path might not exist

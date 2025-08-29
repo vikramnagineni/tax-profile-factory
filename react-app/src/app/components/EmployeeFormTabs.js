@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Nav, NavItem, NavLink, TabContent, TabPane, Alert } from 'reactstrap';
 import EmployeeFormsList from './EmployeeFormsList';
+import PendingEmployerApproval from './PendingEmployerApproval';
+import CompletedForms from './CompletedForms';
 
 const EmployeeFormTabs = ({ mainCtrl, activetab = 1 }) => {
   const [activeTab, setActiveTab] = useState(`tab-${activetab}`);
@@ -24,10 +26,10 @@ const EmployeeFormTabs = ({ mainCtrl, activetab = 1 }) => {
     },
     {
       key: 'tab-3',
-      title: 'Saved/Rejected Forms',
-      component: 'savedRejectedForms',
+      title: 'Forms Pending Employer Approval',
+      component: 'pendingEmployerApproval',
       tabindex: 'tab-3',
-      icon: 'fa-save'
+      icon: 'fa-flag'
     }
   ];
 
@@ -97,40 +99,24 @@ const EmployeeFormTabs = ({ mainCtrl, activetab = 1 }) => {
       
       case 'completedForms':
         return (
-          <div className="text-center py-5">
-            <div className="mb-4">
-              <i className="fas fa-check-circle fa-3x text-success mb-3"></i>
-              <h4>Completed Forms</h4>
-              <p className="text-muted">
-                View and modify your previously completed tax forms.
-                <br />
-                This section would show completed forms with options to edit or resubmit.
-              </p>
-            </div>
-            <Alert color="info">
-              <h4 className="alert-heading">Coming Soon</h4>
-              This functionality will allow you to view and modify completed forms.
-            </Alert>
-          </div>
+          <CompletedForms
+            tabindex={tabConfig.tabindex}
+            mainCtrl={mainCtrl}
+            formTabsCtrl={formTabsCtrl}
+            onViewForm={handleViewForm}
+            onViewFormInstruction={handleViewFormInstruction}
+          />
         );
       
-      case 'savedRejectedForms':
+      case 'pendingEmployerApproval':
         return (
-          <div className="text-center py-5">
-            <div className="mb-4">
-              <i className="fas fa-save fa-3x text-warning mb-3"></i>
-              <h4>Saved/Rejected Forms</h4>
-              <p className="text-muted">
-                Continue working on forms you've saved as drafts or review rejected submissions.
-                <br />
-                This section would show forms in progress and rejection reasons.
-              </p>
-            </div>
-            <Alert color="warning">
-              <h4 className="alert-heading">Coming Soon</h4>
-              This functionality will allow you to manage draft and rejected forms.
-            </Alert>
-          </div>
+         <PendingEmployerApproval
+            tabindex={tabConfig.tabindex}
+            mainCtrl={mainCtrl}
+            formTabsCtrl={formTabsCtrl}
+            onViewForm={handleViewForm}
+            onViewFormInstruction={handleViewFormInstruction}
+          />
         );
       
       default:

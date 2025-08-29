@@ -1,0 +1,166 @@
+<div ng-if="!$ctrl.dataAvailable" class="spacer">
+	<br>
+	<br>
+	<center>
+		<h1>
+			Loading <i class='fa fa-cog fa-spin'></i>
+		</h1>
+	</center>
+</div>
+<div class="col-md-offset-2 col-md-8" ng-if="$ctrl.canEditTaxData">
+<uib-alert type="{{$ctrl.page.alert.typedanger}}">
+<span>&nbsp;</span><b>{{$ctrl.page.alert.dangermsg}}</b>
+</uib-alert>
+</div>
+<div class="col-md-offset-2 col-md-8">
+<uib-alert ng-if="$ctrl.page.alert.warningmsg" type="{{$ctrl.page.alert.typewarning}}" close="$ctrl.page.closeAlertDel($index)">
+<a href="#" popover-animation="true" popover-trigger="mouseenter" uib-popover={{$ctrl.popover}} type="button">
+<i class="glyphicon glyphicon-info-sign"></i></a><span>&nbsp;</span><b>{{$ctrl.page.alert.warningmsg}}</b>
+</uib-alert>
+</div>
+<div class="col-md-offset-2 col-md-8">
+<uib-alert ng-if="$ctrl.page.alert.msg" type="{{$ctrl.page.alert.type}}" close="$ctrl.page.closeAlert($index)">
+<a href="#" popover-animation="true" popover-trigger="mouseenter" uib-popover={{$ctrl.popover}} type="button">
+<i class="glyphicon glyphicon-info-sign"></i></a><span>&nbsp;</span><b>{{$ctrl.page.alert.msg}}</b>
+</uib-alert>
+</div>
+<div ng-if="$ctrl.taxesForReviewNApproval && $ctrl.dataAvailable">
+	<div class="row">
+		<div class="col-md-offset-2 col-md-8">
+			<div class="tab-padding">
+				<div>
+					<div class="panel-group" id="accordion">
+						<div>
+							<div class="panel panel-info spacer">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<a data-toggle="collapse" data-parent="#accordion" href="#fapr">{{$ctrl.greetingMessage}}</a>
+									</h4>
+								</div>
+								<div id="fapr" class="panel-collapse collapse in">
+									<div class="panel-body">
+										<table id="taxesTable" class="table table-bordered bordered table-striped table-condensed">
+											<thead>
+											<tr>
+												<th></th>
+												<th id="Authority">Authority
+													<select ng-model="authFilter" ng-change="changedFilter('authFilter', authFilter)" ng-options="authChoice for authChoice in authChoices"></select>
+												</th>
+												<th id="Tax Name">Tax Name
+													<select ng-model="taxNameFilter" ng-change="changedFilter('taxNameFilter', taxNameFilter)" ng-options="taxNameChoice for taxNameChoice in taxNameChoices"></select>
+												</th>
+												<th id="Residency">Residency
+													<select ng-model="residencyFilter" ng-change="changedFilter('residencyFilter', residencyFilter)" ng-options="residencyChoice for residencyChoice in residencyChoices"></select>
+												</th>
+												<th id="Forms">Form
+													<select ng-model="formsFilter" ng-change="changedFilter('formsFilter', formsFilter)" ng-options="formsChoice for formsChoice in formsChoices"></select>
+												</th>
+											</tr>
+											</thead>
+											<tbody>
+											<tr ng-repeat="row in $ctrl.taxesForReviewNApproval" ng-hide="$ctrl.checkHide(row)">
+												<td>
+<!--												<div class="col-md-8">-->
+													<a href="#" ng-if="row.onbstat ==100" popover-animation="true" popover-placement=left" popover-trigger="mouseenter" uib-popover="A form related to this tax is in progress." aria-label="A form related to this tax is in progress." type="button">
+														<i class="glyphicon glyphicon-warning-sign icon-sm text-danger"></i>
+													</a>
+													<label>
+													<input id="{{row.seqNum}}" type="checkbox" value="{{row.seqNum}}"  ng-model="$ctrl.deletetaxesModel[row.seqNum]" ng-true-value="'YES'" ng-false-value="'NO'" ng-click="$ctrl.toggleSelection(row)" ng-if="$ctrl.canEditTaxData && row.onbstat !=100" />
+													</label>
+												</td>
+												<td>{{row.authName}}</td>
+												<td>{{row.taxName}}</td>
+												<td>{{row.rescodeDesc}}</td>
+												<td>{{row.formNames}}</td>
+											</tr>
+											</tbody>
+										</table>
+									<div class="col-sm-2 spacer" ng-if="$ctrl.canEditTaxData && $ctrl.taxesForReviewNApproval.length >0">
+										<button type="button" class="btn btn-warning btn-sm" ng-click="$ctrl.deleteEmpTaxes()">Delete Taxes</button>
+									</div>
+									<div class="col-sm-1 spacer">
+									    <button type="button" class="btn btn-success btn-sm" ng-click="$ctrl.approveTaxes()"  ng-if="$ctrl.canApproveTaxes">Approve for Export</button>
+									</div>
+									<div style="margin-top: 20px;">
+										<label ng-show="$ctrl.exportsWithholdingFormsOnly">Your payroll provider has chosen to accept withholding taxes only; other taxes will not be exported.</label>
+									</div>
+									<div class="form-group ">
+										<div class="col-sm-12 spacer" ng-if="$ctrl.canEditTaxData">
+											<div class="input-group">
+											<span class="input-group-addon">
+							        		<i class="glyphicon glyphicon-search"></i>
+							   		 		</span>
+							    			<!-- <input type="text" class="form-control" id="query" ng-model="query" placeholder="Search authority name to add taxes releated to it..." class="selfrmquery"/> -->
+							    			<input type="text" typeahead-min-length="3" ng-model="authSelected" placeholder="Search authority name to add related tax..." uib-typeahead="auth as auth.displayName for auth in $ctrl.authData| filter:$viewValue" class="form-control" typeahead-on-select="$ctrl.onAuthSelect($item, $model, $label)">
+							    			<!-- typeahead-min-length="3" --> 
+											</div>
+									    </div>
+									</div>
+									<div ng-repeat="(dim, authtaxes) in $ctrl.authorityTaxDatas" class="pad-25px">
+										<div class="col-md-8 spacer">
+											<label>
+											<span>{{authtaxes.authname}} {{authtaxes.taxtypename}}</span>
+											</label>
+										</div>
+										<div class="col-sm-3 spacer">
+										 	<label for="singleSelect">Res Code: </label>
+										 	<!-- <select data-role="listview" data-inset="true" ng-options="template.value as template.name for template in $ctrl.rescodes" ng-model="item" ng-change="$ctrl.selectResCode(item,authtaxes.bsiauth)"></select> -->
+										 	<select ng-options="val.name for val in $ctrl.rescodes" ng-model="item" name="dim-{{dim}}" ng-change="$ctrl.selectResCode(item,authtaxes.taxtype)"></select>
+										</div>
+										<div class="col-sm-1 spacer">
+									    	<button type="button" class="btn btn-info btn-sm {{authtaxes.btnstatus}}" ng-click="$ctrl.addTax(authtaxes)">Add</button>
+									    </div>
+									</div>
+								   </div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div ng-if="!$ctrl.taxesForReviewNApproval && !$ctrl.deletedEmpTaxes && $ctrl.dataAvailable" class="spacer">
+		<br>
+		<br>
+		<center>
+			<h2>You don't have any taxes for approval/review!</h2>
+		</center>
+</div>
+<div ng-if="$ctrl.deletedEmpTaxes && $ctrl.dataAvailable">
+	<div class="row">
+		<div class="col-md-offset-2 col-md-8">
+			<div class="tab-padding">
+				<div>
+					<div class="panel-group" id="accordion1">
+						<div>
+							<div class="panel panel-info spacer">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<a data-toggle="collapse" data-parent="#accordion1" href="#fapr1">Deleted Taxes</a>
+									</h4>
+								</div>
+								<div id="fapr1" class="panel-collapse collapse in">
+									<div class="panel-body">
+									<div ng-repeat="deltaxes in $ctrl.deletedEmpTaxes" class="pad-25px">
+										<div class="col-md-8">
+											<label>
+											<input id="{{deltaxes.seqNum}}" type="checkbox" value="{{deltaxes.seqNum}}" ng-model="$ctrl.selUndoDeleteModel[deltaxes.seqNum]" ng-true-value="'YES'" ng-false-value="'NO'" ng-click="$ctrl.toggleUndoDeleteSelection(deltaxes)"  ng-if="$ctrl.canEditTaxData" />
+											<span>{{deltaxes.authName | capitalize}} {{deltaxes.taxName | capitalize}}</span>
+											</label>
+										</div>
+									</div>
+									<div class="btn-toolbar pull-right spacer" ng-if="$ctrl.canEditTaxData">
+										<button type="button" class="btn btn-success btn-sm" ng-click="$ctrl.undoDeleteTaxes()">Undo Delete</button>    		
+    								</div>
+								   </div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

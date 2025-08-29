@@ -1,0 +1,85 @@
+<div ng-if="!$ctrl.dataAvailable" class="spacer">
+    <br><br>
+    <center><h1>Loading <i class='fa fa-cog fa-spin'></i></h1></center> 
+    </div>
+    <div ng-if="$ctrl.formsForApproval && $ctrl.dataAvailable">
+    <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+            <div ng-if="$ctrl.alertCount > 0">
+            <div class="tab-padding">
+                <uib-alert ng-if="$ctrl.page.alert.msg" type="{{$ctrl.page.alert.type}}">
+                <ul ng-repeat="alerts in $ctrl.recentAlerts" style="list-style-type: none;">
+                    <li>
+                    <a href="#" popover-animation="true" popover-trigger="mouseenter" uib-popover="{{alerts.reportId}}" aria-label="{{alerts.reportId}}" type="button">
+                                                <i class="glyphicon glyphicon-info-sign"></i></a><span>&nbsp;</span><b>{{alerts.message}}</b></li>
+                </ul>	
+                </uib-alert>
+            </div>
+            </div>
+            <div class="tab-padding" ng-if="$ctrl.page.alert.tamsg">
+                <uib-alert type="{{$ctrl.page.alertTypes.danger}}">
+                <span>&nbsp;</span><b>{{$ctrl.page.alert.tamsg}}</b>
+                </uib-alert>
+            </div>
+            <div class="tab-padding">
+                <div>
+                    <div class="panel-group" id="accordion">
+                        <div>
+                            <br>
+                            <div class="panel panel-info spacer">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#fapr">{{$ctrl.greetingMessage}}</a>
+                                    </h4>
+                                </div>
+                                <div id="fapr" class="panel-collapse collapse in">
+                                    <div class="panel-body">
+                                        <div ng-repeat="forms in $ctrl.formsForApproval" class="pad-25px">
+                                            <div class="row spacer"> 
+                                            <div class="col-md-3">
+                                                <a href="#" ng-if="forms.uistat != $ctrl.page.frmstatus.clear">
+                                                    <span ng-if="forms.uistat == $ctrl.page.frmstatus.approve" class="{{forms.uistat}}" style="color:green"></span>
+                                                    <span ng-if="forms.uistat == $ctrl.page.frmstatus.reject" class="{{forms.uistat}}" style="color:red"></span>
+                                                </a>
+                                                <a href="#" popover-animation="true" popover-trigger="mouseenter" uib-popover="{{forms.frmName}}" aria-label="{{forms.frmName}}" type="button">
+                                                <i class="glyphicon glyphicon-info-sign"></i></a><span>&nbsp;</span>
+                                                <a href="" ng-click="$ctrl.viewForm(forms)" class="">{{forms.frmName}}</a>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <a href="#" popover-animation="false" popover-trigger="mouseenter" popover-append-to-body="true" uib-popover="Submitted on {{forms.onbDateDisp}}&nbsp;{{forms.onbTimeDisp}}" aria-label="Submitted on {{forms.onbDateDisp}}&nbsp;{{forms.onbTimeDisp}}" type="button"><i class="glyphicon glyphicon-time"></i></a><br>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="btn-group">
+                                                    <label class="btn btn-success {{forms.active[1]}}" ng-model="$ctrl.radioModel[forms.reportid]" uib-btn-radio="'Approved'" ng-click="$ctrl.approveSelected(forms)">Approve</label>
+                                                    <label class="btn btn-warning {{forms.active[2]}}" ng-model="$ctrl.radioModel[forms.reportid]" uib-btn-radio="'Rejected'" ng-click="$ctrl.rejectSelected(forms)">Reject</label>
+                                                    <label class="btn btn-primary {{forms.active[0]}}" ng-model="$ctrl.radioModel[forms.reportid]" uib-btn-radio="'Clear'" ng-click="$ctrl.clearSelected(forms)">Clear</label>
+                                                </div>
+                                                <div class="form-group" ng-if="forms.active[2] == $ctrl.page.radiotoggle.active">
+                                                    <label for="exampleInputName2">Reason</label>
+                                                    <input type="text" class="form-control" name="input" ng-model="$ctrl.reasonModel[forms.reportid]" required ng-trim="false" placeholder="Enter your reason for rejection">
+                                                  </div>
+                                                 
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="btn-toolbar pull-right spacer">
+                                            <button type="button" class="btn btn-primary btn-sm {{$ctrl.page.upbtn.status}}" ng-click="$ctrl.updateStatus()">Update Status</button>    		
+                                            <button type="button" class="btn btn-success btn-sm" ng-click="$ctrl.approveAllForms()" ng-if="$ctrl.formsForApproval.length > 1">Select All For Approve</button>
+                                            <button type="button" class="btn btn-warning btn-sm" ng-click="$ctrl.rejectAllForms()" ng-if="$ctrl.formsForApproval.length > 1">Select All For Reject</button>
+                                            <button type="button" class="btn btn-primary btn-sm" ng-click="$ctrl.clearAllForms()"  ng-if="$ctrl.formsForApproval.length > 1">Clear All</button>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div ng-if="!$ctrl.formsForApproval && $ctrl.dataAvailable" class="spacer">
+    <br><br>
+    <center><h2>You don't have any more forms for approval!</h2></center> 
+    </div>
